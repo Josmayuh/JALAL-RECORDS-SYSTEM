@@ -1,28 +1,42 @@
+const masterPassword = "Josmayuh@2320.";
+
 function login() {
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
-  const loginMessage = document.getElementById("loginMessage");
+  const email = document.getElementById("loginEmail").value;
+  const pass = document.getElementById("loginPassword").value;
 
-  // Replace with your master admin email and password
-  const adminEmail = "josemutuak@gmail.com";
-  const adminPassword = "Josmayuh@2320.";
-
-  if (email === adminEmail && password === adminPassword) {
-    loginMessage.style.color = "green";
-    loginMessage.textContent = "Login successful! Redirecting...";
-    
-    // Simulate dashboard load
-    setTimeout(() => {
-      document.getElementById("loginSection").innerHTML = `
-        <h2>Welcome, Administrator</h2>
-        <p>This is your dashboard. You can now manage products, users, documents, and more.</p>
-        <button onclick="alert('Coming soon: Add New Product')">Add Product</button>
-        <button onclick="alert('Coming soon: View Stock')">View Stock</button>
-        <button onclick="alert('Coming soon: Upload Document')">Upload Agreement</button>
-      `;
-    }, 1000);
+  if (email && pass === masterPassword) {
+    document.getElementById("login-page").style.display = "none";
+    document.getElementById("product-entry").style.display = "block";
   } else {
-    loginMessage.style.color = "red";
-    loginMessage.textContent = "Invalid email or password!";
+    alert("Incorrect login credentials.");
   }
+}
+
+function logout() {
+  document.getElementById("product-entry").style.display = "none";
+  document.getElementById("login-page").style.display = "block";
+}
+
+function saveProduct() {
+  const name = document.getElementById("productName").value;
+  const category = document.getElementById("category").value;
+  const subCategory = document.getElementById("subCategory").value;
+  const model = document.getElementById("model").value;
+  const serial = document.getElementById("serialNumber").value;
+  const price = document.getElementById("price").value;
+  const count = document.getElementById("stockCount").value;
+  const date = document.getElementById("entryDate").value;
+
+  const product = {
+    name, category, subCategory, model, serial, price, count, date
+  };
+
+  let products = JSON.parse(localStorage.getItem("products")) || [];
+  products.push(product);
+  localStorage.setItem("products", JSON.stringify(products));
+
+  alert("Product saved successfully!");
+  
+  // Clear fields after saving
+  document.querySelectorAll("#product-entry input").forEach(i => i.value = "");
 }
