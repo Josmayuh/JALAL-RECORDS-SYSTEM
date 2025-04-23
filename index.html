@@ -1,23 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jalal Inventory System</title>
+  <link rel="stylesheet" href="style.css">
+</head>
 <body>
-  <header style="text-align:center; background-color:#222; color:white; padding:10px;">
-    <h1>JALAL INTERNATIONAL COPIERS LIMITED</h1>
-    <p>Contact: +254768159960 / +254736913164</p>
-  </header>
 
-  <div id="loginSection" style="text-align:center; margin-top:30px;">
+  <h1 style="text-align:center;">JALAL INTERNATIONAL COPIERS LIMITED</h1>
+
+  <!-- Login Page -->
+  <div id="login-page">
     <h2>Login</h2>
-    <input type="email" id="email" placeholder="Email" />
-    <br /><br />
-    <input type="password" id="password" placeholder="Password" />
-    <br /><br />
+    <input type="email" id="loginEmail" placeholder="Email"><br>
+    <input type="password" id="loginPassword" placeholder="Password"><br>
     <button onclick="login()">Login</button>
-    <p id="loginMessage" style="color:red;"></p>
   </div>
 
-  <footer style="text-align:center; font-size:10px; margin-top:50px;">
-    <hr />
-    <p>Developed by Joseph Kitheka Mutua (+254745543386 / josemutuak@gmail.com)</p>
+  <!-- Product Entry Page -->
+  <div id="product-entry" style="display:none;">
+    <h2>Add New Product</h2>
+    <input type="text" id="productName" placeholder="Product Name"><br>
+    <input type="text" id="category" placeholder="Category (e.g., Kyocera)"><br>
+    <input type="text" id="subCategory" placeholder="Subcategory (Optional)"><br>
+    <input type="text" id="model" placeholder="Model"><br>
+    <input type="text" id="serialNumber" placeholder="Serial Number"><br>
+    <input type="number" id="price" placeholder="Price"><br>
+    <input type="number" id="stockCount" placeholder="Stock Count"><br>
+    <input type="date" id="entryDate"><br><br>
+    <button onclick="saveProduct()">Save Product</button>
+    <button onclick="logout()">Logout</button>
+  </div>
+
+  <hr>
+  <footer>
+    <div style="text-align:center;">
+      Contact details, +254768159960 / +254736913164<br>
+      <small>Developed by Joseph Kitheka Mutua (+254745543386 / josemutuak@gmail.com)</small>
+    </div>
   </footer>
 
   <script src="app.js"></script>
 </body>
+</html>
