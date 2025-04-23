@@ -1,88 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jalal International Copiers Limited</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jalal Inventory System</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <header>
-        <h1>JALAL INTERNATIONAL COPIERS LIMITED</h1>
-        <footer>
-            <p>Contact details: +254768159960 / +254736913164</p>
-            <p>Developed by Joseph Kitheka Mutua (+254745543386 / josemutuak@gmail.com)</p>
-        </footer>
-    </header>
 
-    <!-- Login Form -->
-    <div id="loginForm" class="login-form">
-        <h2>Login</h2>
-        <form action="#" method="POST">
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required>
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required>
-            <button type="submit">Login</button>
-        </form>
+  <h1 style="text-align:center;">JALAL INTERNATIONAL COPIERS LIMITED</h1>
+
+  <!-- Login Page -->
+  <div id="login-page">
+    <h2>Login</h2>
+    <input type="email" id="loginEmail" placeholder="Email"><br>
+    <input type="password" id="loginPassword" placeholder="Password"><br>
+    <button onclick="login()">Login</button>
+  </div>
+
+  <!-- Product Entry Page -->
+  <div id="product-entry" style="display:none;">
+    <h2>Add New Product</h2>
+    <input type="text" id="productName" placeholder="Product Name"><br>
+
+    <!-- Category and Subcategory Dropdowns -->
+    <label for="category">Category:</label>
+    <select id="category">
+      <option value="">Select Category</option>
+      <option value="Kyocera">Kyocera</option>
+      <option value="Bizhub">Bizhub</option>
+      <option value="Ricoh">Ricoh</option>
+      <option value="Toner">Toner</option>
+      <option value="Spare Parts">Spare Parts</option>
+    </select><br>
+
+    <label for="subCategory">Subcategory (Optional):</label>
+    <input type="text" id="subCategory" placeholder="Subcategory"><br>
+
+    <label for="model">Model:</label>
+    <input type="text" id="model" placeholder="Model"><br>
+
+    <input type="text" id="serialNumber" placeholder="Serial Number"><br>
+    <input type="number" id="price" placeholder="Price"><br>
+    <input type="number" id="stockCount" placeholder="Stock Count"><br>
+    <input type="date" id="entryDate"><br><br>
+
+    <button onclick="saveProduct()">Save Product</button>
+    <button onclick="logout()">Logout</button>
+  </div>
+
+  <hr>
+  <footer>
+    <div style="text-align:center;">
+      Contact details, +254768159960 / +254736913164<br>
+      <small>Developed by Joseph Kitheka Mutua (+254745543386 / josemutuak@gmail.com)</small>
     </div>
+  </footer>
 
-    <!-- Dashboard -->
-    <div id="dashboard" class="dashboard" style="display: none;">
-        <h2>Welcome to the Admin Dashboard</h2>
-
-        <!-- Product Entry Form -->
-        <div id="productEntry">
-            <h3>Product Entry</h3>
-            <form id="productForm">
-                <label for="productName">Product Name:</label>
-                <input type="text" name="productName" required>
-
-                <label for="category">Category:</label>
-                <select name="category" required>
-                    <option value="Kyocera">Kyocera</option>
-                    <option value="Bizhub">Bizhub</option>
-                    <option value="Ricoh">Ricoh</option>
-                    <option value="Toners">Toners</option>
-                    <option value="Spare Parts">Spare Parts</option>
-                </select>
-
-                <label for="subCategory">Sub-Category:</label>
-                <input type="text" name="subCategory" required>
-
-                <label for="quantity">Quantity:</label>
-                <input type="number" name="quantity" required>
-
-                <label for="price">Price:</label>
-                <input type="number" name="price" required>
-
-                <button type="submit">Add Product</button>
-            </form>
-        </div>
-
-        <!-- Inventory Table -->
-        <div id="inventory">
-            <h3>Inventory</h3>
-            <input type="text" id="searchInput" placeholder="Search products...">
-            <input type="date" id="dateFilter">
-            <table id="inventoryTable">
-                <thead>
-                    <tr>
-                        <th>Product Name</th>
-                        <th>Category</th>
-                        <th>Sub-Category</th>
-                        <th>Quantity</th>
-                        <th>Price</th>
-                        <th>Date Added</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Inventory data will go here -->
-                </tbody>
-            </table>
-        </div>
-    </div>
-
-    <script src="app.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>
