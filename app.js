@@ -1,42 +1,86 @@
-const masterPassword = "Josmayuh@2320.";
-
-function login() {
-  const email = document.getElementById("loginEmail").value;
-  const pass = document.getElementById("loginPassword").value;
-
-  if (email && pass === masterPassword) {
-    document.getElementById("login-page").style.display = "none";
-    document.getElementById("product-entry").style.display = "block";
-  } else {
-    alert("Incorrect login credentials.");
-  }
-}
-
-function logout() {
-  document.getElementById("product-entry").style.display = "none";
-  document.getElementById("login-page").style.display = "block";
-}
-
 function saveProduct() {
-  const name = document.getElementById("productName").value;
-  const category = document.getElementById("category").value;
-  const subCategory = document.getElementById("subCategory").value;
-  const model = document.getElementById("model").value;
-  const serial = document.getElementById("serialNumber").value;
-  const price = document.getElementById("price").value;
-  const count = document.getElementById("stockCount").value;
-  const date = document.getElementById("entryDate").value;
-
   const product = {
-    name, category, subCategory, model, serial, price, count, date
+    name: document.getElementById("name").value,
+    category: document.getElementById("category").value,
+    subCategory: document.getElementById("subCategory").value,
+    model: document.getElementById("model").value,
+    serial: document.getElementById("serial").value,
+    price: document.getElementById("price").value,
+    count: document.getElementById("count").value,
+    date: document.getElementById("date").value,
   };
 
-  let products = JSON.parse(localStorage.getItem("products")) || [];
+  if (!product.name || !product.category || !product.model || !product.serial) {
+    alert("Please fill in all required fields.");
+    return;
+  }
+
+  const products = JSON.parse(localStorage.getItem("products")) || [];
   products.push(product);
   localStorage.setItem("products", JSON.stringify(products));
 
-  alert("Product saved successfully!");
-  
-  // Clear fields after saving
-  document.querySelectorAll("#product-entry input").forEach(i => i.value = "");
+  document.querySelectorAll("input").forEach(input => input.value = "");
+  renderProducts();
 }
+
+let sortKey = '';
+let sortAsc = true;
+
+function renderProducts() {
+  const products = JSON.parse(localStorage.getItem("products")) || [];
+  const tableBody = document.querySelector("#productTable tbody");
+  const searchVal = document.getElementById("searchInput").value.toLowerCase();
+  const catFilter = document.getElementById("categoryFilter").value;
+
+  let filtered = products.filter(p => {
+    return (
+      (!catFilter || p.category === catFilter) &&
+      (!searchVal ||
+        p.name.toLowerCase().includes(searchVal) ||
+        p.model.toLowerCase().includes(searchVal) ||
+        p.serial.toLowerCase().includes(searchVal) ||
+        p.date.includes(searchVal))
+    );
+  });
+
+  if (sortKey) {
+    filtered.sort((a, b) => {
+      const valA = a[sortKey].toString().toLowerCase();
+      const valB = b[sortKey].toString().toLowerCase();
+      return sortAsc ? valA.localeCompare(valB) : valB.localeCompare(valA);
+    });
+  }
+
+  tableBody.innerHTML = filtered.map(p => `
+    <tr>
+      <td>${p.name}</td>
+      <td>${p.category}</td>
+      <td>${p.subCategory}</td>
+      <td>${p.model}</td>
+      <td>${p.serial}</td>
+      <td>${p.price}</td>
+      <td>${p.count}</td>
+      <td>${p.date}</td>
+    </tr>
+  `).join("");
+
+  updateFilterOptions(products);
+}
+
+function updateFilterOptions(products) {
+  const uniqueCats = [...new Set(products.map(p => p.category))];
+  const filter = document.getElementById("categoryFilter");
+  filter.innerHTML = `<option value="">All Categories</option>` +
+    uniqueCats.map(c => `<option value="${c}">${c}</option>`).join("");
+}
+
+function sortTable(key) {
+  if (sortKey === key) sortAsc = !sortAsc;
+  else {
+    sortKey = key;
+    sortAsc = true;
+  }
+  renderProducts();
+}
+
+window.onload = renderProducts;
