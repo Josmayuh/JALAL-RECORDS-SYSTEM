@@ -1,48 +1,28 @@
-const data = [
-  {
-    product: "Printer",
-    model: "Kyocera M2040dn",
-    serial: "KYO12345",
-    price: "KSh 40,000",
-    counter: "2500",
-    date: "2025-04-24"
-  },
-  {
-    product: "Toner",
-    model: "Bizhub TN217",
-    serial: "TN217001",
-    price: "KSh 6,000",
-    counter: "-",
-    date: "2025-04-20"
+function login() {
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+  const loginMessage = document.getElementById("loginMessage");
+
+  // Replace with your master admin email and password
+  const adminEmail = "josemutuak@gmail.com";
+  const adminPassword = "Josmayuh@2320.";
+
+  if (email === adminEmail && password === adminPassword) {
+    loginMessage.style.color = "green";
+    loginMessage.textContent = "Login successful! Redirecting...";
+    
+    // Simulate dashboard load
+    setTimeout(() => {
+      document.getElementById("loginSection").innerHTML = `
+        <h2>Welcome, Administrator</h2>
+        <p>This is your dashboard. You can now manage products, users, documents, and more.</p>
+        <button onclick="alert('Coming soon: Add New Product')">Add Product</button>
+        <button onclick="alert('Coming soon: View Stock')">View Stock</button>
+        <button onclick="alert('Coming soon: Upload Document')">Upload Agreement</button>
+      `;
+    }, 1000);
+  } else {
+    loginMessage.style.color = "red";
+    loginMessage.textContent = "Invalid email or password!";
   }
-];
-
-const tbody = document.querySelector("#inventoryTable tbody");
-const searchBar = document.getElementById("searchBar");
-
-function displayData(filtered = data) {
-  tbody.innerHTML = "";
-  filtered.forEach(item => {
-    const row = `<tr>
-      <td>${item.product}</td>
-      <td>${item.model}</td>
-      <td>${item.serial}</td>
-      <td>${item.price}</td>
-      <td>${item.counter}</td>
-      <td>${item.date}</td>
-    </tr>`;
-    tbody.innerHTML += row;
-  });
 }
-
-searchBar.addEventListener("input", () => {
-  const term = searchBar.value.toLowerCase();
-  const filtered = data.filter(d =>
-    Object.values(d).some(val =>
-      val.toLowerCase().includes(term)
-    )
-  );
-  displayData(filtered);
-});
-
-displayData();
