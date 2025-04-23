@@ -1,1 +1,10 @@
-
+{
+  "name": "jalal-inventory-system",
+  "version": "1.0.0",
+  "description": "Inventory management system for Jalal International Copiers Limited",
+  "main": "index.html",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {}
+}
