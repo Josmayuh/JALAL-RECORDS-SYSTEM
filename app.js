@@ -1,56 +1,48 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const loginForm = document.getElementById('loginForm');
-    const dashboard = document.getElementById('dashboard');
-    const productForm = document.getElementById('productForm');
-    const inventoryTable = document.getElementById('inventoryTable').getElementsByTagName('tbody')[0];
-    const searchInput = document.getElementById('searchInput');
-    const dateFilter = document.getElementById('dateFilter');
+const masterPassword = "Josmayuh@2320.";
 
-    const masterPassword = 'Josmayuh@2320.';
-    const users = [
-        { email: 'admin@example.com', password: 'admin123' },
-        { email: 'user@example.com', password: 'user123' }
-    ];
+function login() {
+  const email = document.getElementById("loginEmail").value;
+  const pass = document.getElementById("loginPassword").value;
 
-    loginForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const email = loginForm.email.value;
-        const password = loginForm.password.value;
-        const user = users.find(u => u.email === email && u.password === password);
-        if (user) {
-            loginForm.style.display = 'none';
-            dashboard.style.display = 'block';
-        } else {
-            alert('Invalid credentials');
-        }
-    });
+  if (email && pass === masterPassword) {
+    document.getElementById("login-page").style.display = "none";
+    document.getElementById("product-entry").style.display = "block";
+  } else {
+    alert("Incorrect login credentials.");
+  }
+}
 
-    productForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const formData = new FormData(productForm);
-        const row = inventoryTable.insertRow();
-        formData.forEach((value, key) => {
-            const cell = row.insertCell();
-            cell.textContent = value;
-        });
-        const dateCell = row.insertCell();
-        dateCell.textContent = new Date().toLocaleDateString();
-        productForm.reset();
-    });
+function logout() {
+  document.getElementById("product-entry").style.display = "none";
+  document.getElementById("login-page").style.display = "block";
+}
 
-    function filterInventory() {
-        const query = searchInput.value.toLowerCase();
-        const date = dateFilter.value;
-        const rows = inventoryTable.getElementsByTagName('tr');
+function saveProduct() {
+  const name = document.getElementById("productName").value;
+  const category = document.getElementById("category").value;
+  const subCategory = document.getElementById("subCategory").value;
+  const model = document.getElementById("model").value;
+  const serial = document.getElementById("serialNumber").value;
+  const price = document.getElementById("price").value;
+  const count = document.getElementById("stockCount").value;
+  const date = document.getElementById("entryDate").value;
 
-        Array.from(rows).forEach(row => {
-            const cells = row.getElementsByTagName('td');
-            const text = Array.from(cells).map(td => td.textContent.toLowerCase()).join(' ');
-            const dateMatch = !date || row.lastChild.textContent === date;
-            row.style.display = text.includes(query) && dateMatch ? '' : 'none';
-        });
-    }
+  if (!category || !model) {
+    alert("Category and Model are required fields.");
+    return;
+  }
 
-    searchInput.addEventListener('input', filterInventory);
-    dateFilter.addEventListener('change', filterInventory);
-});
+  const product = {
+    name, category, subCategory, model, serial, price, count, date
+  };
+
+  let products = JSON.parse(localStorage.getItem("products")) || [];
+  products.push(product);
+  localStorage.setItem("products", JSON.stringify(products));
+
+  alert("Product saved successfully!");
+
+  // Clear fields after saving
+  document.querySelectorAll("#product-entry input").forEach(i => i.value = "");
+  document.getElementById("category").value = ""; // Reset category dropdown
+}
