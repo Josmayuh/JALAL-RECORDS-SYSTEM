@@ -1,44 +1,83 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Jalal Inventory System</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Jalal International Copiers Limited</title>
+  <style>
+    body {
+      font-family: Arial;
+      padding: 20px;
+      background-color: #f4f6f8;
+    }
+    h1, h3 {
+      color: #004080;
+    }
+    input, select, button {
+      padding: 8px;
+      margin: 5px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      background: white;
+    }
+    th, td {
+      padding: 8px;
+      border: 1px solid #ccc;
+      text-align: left;
+    }
+    th {
+      background-color: #dbe9f4;
+      cursor: pointer;
+    }
+    footer {
+      font-size: 12px;
+      margin-top: 30px;
+    }
+  </style>
 </head>
 <body>
 
-  <h1 style="text-align:center;">JALAL INTERNATIONAL COPIERS LIMITED</h1>
+  <h1>JALAL INTERNATIONAL COPIERS LIMITED</h1>
+  <p>Contact details: +254768159960 / +254736913164</p>
 
-  <!-- Login Page -->
-  <div id="login-page">
-    <h2>Login</h2>
-    <input type="email" id="loginEmail" placeholder="Email"><br>
-    <input type="password" id="loginPassword" placeholder="Password"><br>
-    <button onclick="login()">Login</button>
-  </div>
+  <h3>Add New Product</h3>
+  <input type="text" id="name" placeholder="Product Name" />
+  <input type="text" id="category" placeholder="Category (e.g., Kyocera)" />
+  <input type="text" id="subCategory" placeholder="Subcategory (e.g., TASKalfa series)" />
+  <input type="text" id="model" placeholder="Model" />
+  <input type="text" id="serial" placeholder="Serial Number" />
+  <input type="number" id="price" placeholder="Price" />
+  <input type="number" id="count" placeholder="Stock Count" />
+  <input type="date" id="date" placeholder="Date" />
+  <button onclick="saveProduct()">Save Product</button>
 
-  <!-- Product Entry Page -->
-  <div id="product-entry" style="display:none;">
-    <h2>Add New Product</h2>
-    <input type="text" id="productName" placeholder="Product Name"><br>
-    <input type="text" id="category" placeholder="Category (e.g., Kyocera)"><br>
-    <input type="text" id="subCategory" placeholder="Subcategory (Optional)"><br>
-    <input type="text" id="model" placeholder="Model"><br>
-    <input type="text" id="serialNumber" placeholder="Serial Number"><br>
-    <input type="number" id="price" placeholder="Price"><br>
-    <input type="number" id="stockCount" placeholder="Stock Count"><br>
-    <input type="date" id="entryDate"><br><br>
-    <button onclick="saveProduct()">Save Product</button>
-    <button onclick="logout()">Logout</button>
-  </div>
+  <h3>Inventory List</h3>
+  <input type="text" id="searchInput" placeholder="Search..." onkeyup="renderProducts()" />
+  <select id="categoryFilter" onchange="renderProducts()">
+    <option value="">All Categories</option>
+  </select>
 
-  <hr>
+  <table id="productTable">
+    <thead>
+      <tr>
+        <th onclick="sortTable('name')">Name</th>
+        <th onclick="sortTable('category')">Category</th>
+        <th onclick="sortTable('subCategory')">Subcategory</th>
+        <th onclick="sortTable('model')">Model</th>
+        <th onclick="sortTable('serial')">Serial</th>
+        <th onclick="sortTable('price')">Price</th>
+        <th onclick="sortTable('count')">Stock</th>
+        <th onclick="sortTable('date')">Date</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
   <footer>
-    <div style="text-align:center;">
-      Contact details, +254768159960 / +254736913164<br>
-      <small>Developed by Joseph Kitheka Mutua (+254745543386 / josemutuak@gmail.com)</small>
-    </div>
+    Developed by Joseph Kitheka Mutua (+254745543386 / josemutuak@gmail.com)
   </footer>
 
   <script src="app.js"></script>
