@@ -1,86 +1,56 @@
-function saveProduct() {
-  const product = {
-    name: document.getElementById("name").value,
-    category: document.getElementById("category").value,
-    subCategory: document.getElementById("subCategory").value,
-    model: document.getElementById("model").value,
-    serial: document.getElementById("serial").value,
-    price: document.getElementById("price").value,
-    count: document.getElementById("count").value,
-    date: document.getElementById("date").value,
-  };
+document.addEventListener('DOMContentLoaded', () => {
+    const loginForm = document.getElementById('loginForm');
+    const dashboard = document.getElementById('dashboard');
+    const productForm = document.getElementById('productForm');
+    const inventoryTable = document.getElementById('inventoryTable').getElementsByTagName('tbody')[0];
+    const searchInput = document.getElementById('searchInput');
+    const dateFilter = document.getElementById('dateFilter');
 
-  if (!product.name || !product.category || !product.model || !product.serial) {
-    alert("Please fill in all required fields.");
-    return;
-  }
+    const masterPassword = 'Josmayuh@2320.';
+    const users = [
+        { email: 'admin@example.com', password: 'admin123' },
+        { email: 'user@example.com', password: 'user123' }
+    ];
 
-  const products = JSON.parse(localStorage.getItem("products")) || [];
-  products.push(product);
-  localStorage.setItem("products", JSON.stringify(products));
-
-  document.querySelectorAll("input").forEach(input => input.value = "");
-  renderProducts();
-}
-
-let sortKey = '';
-let sortAsc = true;
-
-function renderProducts() {
-  const products = JSON.parse(localStorage.getItem("products")) || [];
-  const tableBody = document.querySelector("#productTable tbody");
-  const searchVal = document.getElementById("searchInput").value.toLowerCase();
-  const catFilter = document.getElementById("categoryFilter").value;
-
-  let filtered = products.filter(p => {
-    return (
-      (!catFilter || p.category === catFilter) &&
-      (!searchVal ||
-        p.name.toLowerCase().includes(searchVal) ||
-        p.model.toLowerCase().includes(searchVal) ||
-        p.serial.toLowerCase().includes(searchVal) ||
-        p.date.includes(searchVal))
-    );
-  });
-
-  if (sortKey) {
-    filtered.sort((a, b) => {
-      const valA = a[sortKey].toString().toLowerCase();
-      const valB = b[sortKey].toString().toLowerCase();
-      return sortAsc ? valA.localeCompare(valB) : valB.localeCompare(valA);
+    loginForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const email = loginForm.email.value;
+        const password = loginForm.password.value;
+        const user = users.find(u => u.email === email && u.password === password);
+        if (user) {
+            loginForm.style.display = 'none';
+            dashboard.style.display = 'block';
+        } else {
+            alert('Invalid credentials');
+        }
     });
-  }
 
-  tableBody.innerHTML = filtered.map(p => `
-    <tr>
-      <td>${p.name}</td>
-      <td>${p.category}</td>
-      <td>${p.subCategory}</td>
-      <td>${p.model}</td>
-      <td>${p.serial}</td>
-      <td>${p.price}</td>
-      <td>${p.count}</td>
-      <td>${p.date}</td>
-    </tr>
-  `).join("");
+    productForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const formData = new FormData(productForm);
+        const row = inventoryTable.insertRow();
+        formData.forEach((value, key) => {
+            const cell = row.insertCell();
+            cell.textContent = value;
+        });
+        const dateCell = row.insertCell();
+        dateCell.textContent = new Date().toLocaleDateString();
+        productForm.reset();
+    });
 
-  updateFilterOptions(products);
-}
+    function filterInventory() {
+        const query = searchInput.value.toLowerCase();
+        const date = dateFilter.value;
+        const rows = inventoryTable.getElementsByTagName('tr');
 
-function updateFilterOptions(products) {
-  const uniqueCats = [...new Set(products.map(p => p.category))];
-  const filter = document.getElementById("categoryFilter");
-  filter.innerHTML = `<option value="">All Categories</option>` +
-    uniqueCats.map(c => `<option value="${c}">${c}</option>`).join("");
-}
+        Array.from(rows).forEach(row => {
+            const cells = row.getElementsByTagName('td');
+            const text = Array.from(cells).map(td => td.textContent.toLowerCase()).join(' ');
+            const dateMatch = !date || row.lastChild.textContent === date;
+            row.style.display = text.includes(query) && dateMatch ? '' : 'none';
+        });
+    }
 
-function sortTable(key) {
-  if (sortKey === key) sortAsc = !sortAsc;
-  else {
-    sortKey = key;
-    sortAsc = true;
-  }
-  renderProducts();
-}
-
-window.onload = renderProducts;
+    searchInput.addEventListener('input', filterInventory);
+    dateFilter.addEventListener('change', filterInventory);
+});
